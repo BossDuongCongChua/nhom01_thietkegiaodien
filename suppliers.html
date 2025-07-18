@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà Cung Cấp - FastFood Express</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .suppliers-hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 120px 0 80px;
+            color: white;
+        }
+        
+        .supplier-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .supplier-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .supplier-logo {
+            height: 150px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .supplier-logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .supplier-card:hover .supplier-logo::before {
+            left: 100%;
+        }
+        
+        .supplier-logo img {
+            max-width: 120px;
+            max-height: 80px;
+            object-fit: contain;
+        }
+        
+        .supplier-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .rating-stars {
+            color: #ffc107;
+        }
+        
+        .partnership-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .category-filter {
+            margin-bottom: 3rem;
+        }
+        
+        .category-filter .btn {
+            border-radius: 25px;
+            padding: 10px 25px;
+            margin: 0 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .category-filter .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .category-filter .btn.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .partnership-stats {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .contact-supplier {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-supplier:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .supplier-details {
+            padding: 1.5rem;
+        }
+        
+        .certification-mini {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin: 0.1rem;
+        }
+        
+        .partnership-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .partnership-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+        
+        .become-supplier {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .supplier-form {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .form-floating .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .form-floating .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-hamburger me-2"></i>FastFood Express
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#menu">Thực đơn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#promotions">Khuyến mãi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Liên hệ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="origin.html">Xuất xứ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="suppliers.html">Nhà cung cấp</a>
+                    </li>
+                </ul>
+                
+                <div class="cart-container">
+                    <a href="index.html" class="btn btn-outline-light">
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Suppliers Hero -->
+    <section class="suppliers-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">
+                        Đối tác nhà cung cấp
+                    </h1>
+                    <p class="lead mb-0 animate__animated animate__fadeInUp">
+                        Hợp tác cùng những nhà cung cấp uy tín hàng đầu để mang đến chất lượng tốt nhất
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership Stats -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="partnership-stats animate__animated animate__fadeInUp">
+                        <span class="stat-number">50+</span>
+                        <h5 class="fw-bold">Nhà cung cấp</h5>
+                        <p class="text-muted mb-0">Đối tác tin cậy</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="partnership-stats animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                        <span class="stat-number">15</span>
+                        <h5 class="fw-bold">Năm kinh nghiệm</h5>
+                        <p class="text-muted mb-0">Hợp tác lâu dài</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="partnership-stats animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                        <span class="stat-number">100%</span>
+                        <h5 class="fw-bold">Chất lượng</h5>
+                        <p class="text-muted mb-0">Đảm bảo tiêu chuẩn</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="partnership-stats animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                        <span class="stat-number">24/7</span>
+                        <h5 class="fw-bold">Hỗ trợ</h5>
+                        <p class="text-muted mb-0">Phục vụ liên tục</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Danh sách nhà cung cấp</h2>
+                <p class="lead text-muted">Các đối tác uy tín trong từng lĩnh vực</p>
+            </div>
+            
+            <div class="category-filter text-center">
+                <button class="btn btn-outline-primary active" data-category="all">Tất cả</button>
+                <button class="btn btn-outline-primary" data-category="meat">Thịt & Hải sản</button>
+                <button class="btn btn-outline-primary" data-category="vegetables">Rau củ quả</button>
+                <button class="btn btn-outline-primary" data-category="dairy">Sữa & Phô mai</button>
+                <button class="btn btn-outline-primary" data-category="grains">Ngũ cốc</button>
+                <button class="btn btn-outline-primary" data-category="beverages">Đồ uống</button>
+            </div>
+            
+            <div class="row" id="suppliersGrid">
+                <!-- Meat & Seafood Suppliers -->
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="meat">
+                    <div class="supplier-card animate__animated animate__fadeInUp">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác chiến lược</div>
+                            <i class="fas fa-cow fa-4x text-primary"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Trang trại Ba Vì</h5>
+                            <p class="text-muted">Chuyên cung cấp thịt bò tươi chất lượng cao</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-muted">(4.9/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">VietGAP</span>
+                                <span class="certification-mini">Organic</span>
+                                <span class="certification-mini">ISO 9001</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Hà Nội
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Trang trại Ba Vì')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="meat">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác tin cậy</div>
+                            <i class="fas fa-fish fa-4x text-info"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Hải sản Vũng Tàu</h5>
+                            <p class="text-muted">Hải sản tươi sống từ vùng biển Vũng Tàu</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-muted">(4.7/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">Fresh</span>
+                                <span class="certification-mini">HACCP</span>
+                                <span class="certification-mini">MSC</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Vũng Tàu
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Hải sản Vũng Tàu')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="meat">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác mới</div>
+                            <i class="fas fa-drumstick-bite fa-4x text-warning"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Gà sạch Đồng Tháp</h5>
+                            <p class="text-muted">Gà ta thả vườn, chăn nuôi theo tiêu chuẩn hữu cơ</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-muted">(4.8/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">Free-range</span>
+                                <span class="certification-mini">Antibiotic-free</span>
+                                <span class="certification-mini">Organic</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Đồng Tháp
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Gà sạch Đồng Tháp')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vegetables Suppliers -->
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="vegetables">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác chiến lược</div>
+                            <i class="fas fa-carrot fa-4x text-success"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Rau sạch Đà Lạt</h5>
+                            <p class="text-muted">Rau củ quả hữu cơ từ cao nguyên Đà Lạt</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-muted">(5.0/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">Organic</span>
+                                <span class="certification-mini">VietGAP</span>
+                                <span class="certification-mini">Fresh</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Đà Lạt
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Rau sạch Đà Lạt')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="vegetables">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác tin cậy</div>
+                            <i class="fas fa-apple-alt fa-4x text-danger"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Trái cây Cần Thơ</h5>
+                            <p class="text-muted">Trái cây nhiệt đới tươi ngon từ miệt vườn</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-muted">(4.6/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">Natural</span>
+                                <span class="certification-mini">VietGAP</span>
+                                <span class="certification-mini">Sweet</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Cần Thơ
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Trái cây Cần Thơ')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dairy Suppliers -->
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="dairy">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Nhập khẩu</div>
+                            <i class="fas fa-cheese fa-4x text-warning"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Phô mai New Zealand</h5>
+                            <p class="text-muted">Phô mai cao cấp nhập khẩu từ New Zealand</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-muted">(4.9/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">Premium</span>
+                                <span class="certification-mini">Imported</span>
+                                <span class="certification-mini">Pure</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>New Zealand
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Phô mai New Zealand')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grains Suppliers -->
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="grains">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.6s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác lâu năm</div>
+                            <i class="fas fa-seedling fa-4x text-success"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Gạo ST25 An Giang</h5>
+                            <p class="text-muted">Gạo thơm ngon số 1 thế giới từ An Giang</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-muted">(5.0/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">World #1</span>
+                                <span class="certification-mini">Premium</span>
+                                <span class="certification-mini">Fragrant</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>An Giang
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Gạo ST25 An Giang')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="grains">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.7s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Nhập khẩu</div>
+                            <i class="fas fa-bread-slice fa-4x text-warning"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Bột mì Pháp</h5>
+                            <p class="text-muted">Bột mì cao cấp nhập khẩu từ Pháp</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-muted">(4.8/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">French</span>
+                                <span class="certification-mini">Premium</span>
+                                <span class="certification-mini">Quality</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Pháp
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Bột mì Pháp')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Beverages Suppliers -->
+                <div class="col-lg-4 col-md-6 mb-4 supplier-item" data-category="beverages">
+                    <div class="supplier-card animate__animated animate__fadeInUp" style="animation-delay: 0.8s;">
+                        <div class="supplier-logo">
+                            <div class="partnership-badge">Đối tác chính thức</div>
+                            <i class="fas fa-glass-whiskey fa-4x text-primary"></i>
+                        </div>
+                        <div class="supplier-details">
+                            <h5 class="fw-bold">Coca-Cola Việt Nam</h5>
+                            <p class="text-muted">Đồ uống giải khát hàng đầu thế giới</p>
+                            <div class="supplier-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-muted">(4.9/5)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="certification-mini">Global Brand</span>
+                                <span class="certification-mini">ISO 9001</span>
+                                <span class="certification-mini">Fresh</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Việt Nam
+                                </small>
+                                <button class="contact-supplier" onclick="contactSupplier('Coca-Cola Việt Nam')">
+                                    Liên hệ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership Timeline -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h2 class="display-6 fw-bold mb-4">Lịch sử hợp tác</h2>
+                    <div class="partnership-timeline">
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary">2024 - Mở rộng đối tác quốc tế</h5>
+                            <p class="text-muted">Ký kết hợp tác với các nhà cung cấp từ New Zealand, Pháp và Úc để nâng cao chất lượng sản phẩm.</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary">2022 - Chứng nhận chất lượng</h5>
+                            <p class="text-muted">Tất cả đối tác đều đạt chứng nhận ISO 22000 và HACCP, đảm bảo an toàn thực phẩm tuyệt đối.</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary">2020 - Hệ thống chuỗi lạnh</h5>
+                            <p class="text-muted">Đầu tư hệ thống chuỗi lạnh hiện đại, kết nối trực tiếp với các trang trại và nhà máy chế biến.</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary">2018 - Khởi đầu hợp tác</h5>
+                            <p class="text-muted">Bắt đầu hợp tác với 10 nhà cung cấp địa phương, tập trung vào chất lượng và nguồn gốc rõ ràng.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="become-supplier">
+                        <h3 class="fw-bold mb-4">Trở thành đối tác của chúng tôi</h3>
+                        <p class="mb-4">Bạn là nhà cung cấp uy tín và muốn hợp tác với FastFood Express? Hãy liên hệ với chúng tôi!</p>
+                        
+                        <div class="supplier-form">
+                            <form id="supplierForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="companyName" placeholder="Tên công ty" required>
+                                            <label for="companyName">Tên công ty *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="contactPerson" placeholder="Người liên hệ" required>
+                                            <label for="contactPerson">Người liên hệ *</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" id="companyEmail" placeholder="Email" required>
+                                            <label for="companyEmail">Email *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input type="tel" class="form-control" id="companyPhone" placeholder="Số điện thoại" required>
+                                            <label for="companyPhone">Số điện thoại *</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="productCategory" required>
+                                            <option value="">Chọn loại sản phẩm</option>
+                                            <option value="meat">Thịt & Hải sản</option>
+                                            <option value="vegetables">Rau củ quả</option>
+                                            <option value="dairy">Sữa & Phô mai</option>
+                                            <option value="grains">Ngũ cốc</option>
+                                            <option value="beverages">Đồ uống</option>
+                                            <option value="other">Khác</option>
+                                        </select>
+                                        <label for="productCategory">Loại sản phẩm *</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" id="companyDescription" placeholder="Mô tả công ty" style="height: 100px" required></textarea>
+                                        <label for="companyDescription">Mô tả công ty và sản phẩm *</label>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-handshake me-2"></i>Gửi đề xuất hợp tác
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-3">
+                    <h5>FastFood Express</h5>
+                    <p>Thức ăn nhanh ngon nhất với chất lượng đảm bảo và dịch vụ tận tâm.</p>
+                </div>
+                <div class="col-lg-4 mb-3">
+                    <h5>Liên kết nhanh</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white-50">Trang chủ</a></li>
+                        <li><a href="index.html#menu" class="text-white-50">Thực đơn</a></li>
+                        <li><a href="contact.html" class="text-white-50">Liên hệ</a></li>
+                        <li><a href="origin.html" class="text-white-50">Xuất xứ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-3">
+                    <h5>Liên hệ</h5>
+                    <p>📍 123 Đường ABC, Quận 1, TP.HCM<br>
+                       📞 1900 1234<br>
+                       ✉️ info@fastfoodexpress.com</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2024 FastFood Express. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Category filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-filter .btn');
+            const supplierItems = document.querySelectorAll('.supplier-item');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter suppliers
+                    supplierItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        
+                        if (category === 'all' || itemCategory === category) {
+                            item.style.display = 'block';
+                            item.style.animation = 'fadeInUp 0.5s ease-out';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Supplier form handling
+            document.getElementById('supplierForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    companyName: document.getElementById('companyName').value,
+                    contactPerson: document.getElementById('contactPerson').value,
+                    email: document.getElementById('companyEmail').value,
+                    phone: document.getElementById('companyPhone').value,
+                    category: document.getElementById('productCategory').value,
+                    description: document.getElementById('companyDescription').value,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Simulate form submission
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang gửi...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Cảm ơn bạn đã quan tâm! Chúng tôi sẽ liên hệ trong thời gian sớm nhất.');
+                    e.target.reset();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            });
+        });
+        
+        // Contact supplier function
+        function contactSupplier(supplierName) {
+            alert(`Đang kết nối với ${supplierName}. Chức năng này sẽ được phát triển trong phiên bản tiếp theo.`);
+        }
+        
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.supplier-card, .partnership-stats, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Counter animation for stats
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                
+                if (target === 100) {
+                    element.textContent = Math.floor(current) + '%';
+                } else if (target === 24) {
+                    element.textContent = Math.floor(current) + '/7';
+                } else {
+                    element.textContent = Math.floor(current) + '+';
+                }
+            }, 20);
+        }
+        
+        // Animate counters when they come into view
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const text = counter.textContent;
+                    let target;
+                    
+                    if (text.includes('+')) {
+                        target = parseInt(text.replace('+', ''));
+                    } else if (text.includes('%')) {
+                        target = parseInt(text.replace('%', ''));
+                    } else if (text.includes('/7')) {
+                        target = parseInt(text.replace('/7', ''));
+                    } else {
+                        target = parseInt(text);
+                    }
+                    
+                    animateCounter(counter, target);
+                    counterObserver.unobserve(counter);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.stat-number').forEach(counter => {
+            counterObserver.observe(counter);
+        });
+    </script>
+</body>
+</html>
